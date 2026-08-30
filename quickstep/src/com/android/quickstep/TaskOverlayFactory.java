@@ -343,14 +343,18 @@ public class TaskOverlayFactory implements ResourceBasedOverride {
 
             @Override
             public void onToggleDpi() {
-                RecentsView recentsView = mThumbnailView.getTaskView().getRecentsView();
+                final TaskView taskView = mThumbnailView.getTaskView();
+                final RecentsView recentsView = taskView.getRecentsView();
                 if (recentsView == null) {
-                    DisplayDensityUtils.toggleDisplayDensity(mThumbnailView.getContext());
+                    DisplayDensityUtils.toggleTaskDensity(mTask.key.id);
                     return;
                 }
 
-                recentsView.exitOverviewThenRun(() ->
-                        DisplayDensityUtils.toggleDisplayDensity(mThumbnailView.getContext()));
+                endLiveTileMode(() -> {
+                    if (DisplayDensityUtils.toggleTaskDensity(mTask.key.id)) {
+                        taskView.launchTasks();
+                    }
+                });
             }
         }
     }

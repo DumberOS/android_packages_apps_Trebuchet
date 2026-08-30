@@ -2459,22 +2459,6 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
         startHome(mActivity.isStarted());
     }
 
-    public void exitOverviewThenRun(Runnable postExitAction) {
-        if (shouldSwipeDownLaunchApp()) {
-            TaskView runningTaskView = getRunningTaskView();
-            if (runningTaskView != null) {
-                RunnableList launchCallbacks = runningTaskView.launchTasks();
-                if (launchCallbacks != null) {
-                    launchCallbacks.add(postExitAction);
-                    return;
-                }
-            }
-        }
-
-        startHome(false /* animated */);
-        post(postExitAction);
-    }
-
     public void startHome(boolean animated) {
         if (!canStartHomeSafely()) return;
         handleStartHome(animated);
